@@ -1,0 +1,26 @@
+package com.ntuzy.Test;
+
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
+public class Demo1 {
+
+	public static void main(String[] args) {
+		// 加载全局文件 SqlSessionFactoryBuilder
+		SqlSessionFactoryBuilder
+		// SqlSessionFactory
+		
+		// 创建SqlSession 可用于执行增删改查
+		
+		// 执行操作
+		
+		// 更新造作 需要提交事务
+		
+		
+		// 关闭连接
+		
+		
+		
+		
+	}
+	
+}
