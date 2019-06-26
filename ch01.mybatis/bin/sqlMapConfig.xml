@@ -4,26 +4,41 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
+	<!-- 内部属性 -->
+	<!-- <properties> <property name="jdbc.driver" value="com.mysql.jdbc.Driver"/> 
+		<property name="jdbc.url" value="jdbc:mysql://localhost:3306/mybatis?characterEncoding=utf-8"/> 
+		</properties> -->
+
+
+	<!-- 外部属性使用 -->
+	<properties resource="jdbc.properties" />
+
+	<!-- 定义别名  放在properties后面 -->
+	<typeAliases>
+		<typeAlias type="com.ntuzy.domain.Customer" alias="customer" />
+	</typeAliases>
+
 	<!-- 数据库环境 -->
 	<environments default="develop">
 		<environment id="develop">
-
+			<!-- JDBC事务管理 -->
 			<transactionManager type="JDBC" />
-
+			<!-- 连接池配置 -->
+			<!-- POOLED 代表使用mybatis连接池 UNPOOLED 代表不启用连接池 -->
 			<dataSource type="POOLED">
-				<property name="driver" value="com.mysql.jdbc.Driver" />
-				<property name="url"
-					value="jdbc:mysql://localhost:3306/mybatis?characterEncoding=utf-8" />
+				<property name="driver" value="${jdbc.driver}" />
+				<property name="url" value="${jdbc.url}" />
 				<property name="username" value="root" />
 				<property name="password" value="123456" />
 			</dataSource>
 
 		</environment>
 	</environments>
-	
+
+	<!-- sql映射文件 -->
 	<mappers>
-	    <mapper resource="Customer.xml" />
+		<mapper resource="Customer.xml" />
 	</mappers>
-	
+
 
 </configuration>

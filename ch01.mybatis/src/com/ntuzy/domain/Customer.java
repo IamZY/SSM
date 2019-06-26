@@ -30,6 +30,10 @@ public class Customer {
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
+	@Override
+	public String toString() {
+		return "Customer [id=" + id + ", name=" + name + ", gender=" + gender + ", telephone=" + telephone + "]";
+	}
 	
 	
 	

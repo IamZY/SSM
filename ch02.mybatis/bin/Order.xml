@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 动态代理方式 1 namespace必须和dao接口的路径保持一致 2 dao接口里面的方式和sql的id保持一致 3 dao方法的参数和返回值类型和映射文件的parmamterType保持一致 -->
+<mapper namespace="com.ntuzy.dao.OrderDao">
+
+	<select id="queryOrderUser" resultType="com.ntuzy.domain.OrderUser">
+		select o.id,o.user_id,u.name,productname
+		from t_order o
+		left join t_user u on o.user_id=u.id
+	</select>
+	
+	<resultMap type="com.ntuzy.domain.Order" id="OrderUserResultMap">
+	    <id column="id" property="id" />
+	    <result column="productname" property="productname" />
+	    <result column="orderno" property="orderno" />
+	    
+	    <!-- 
+	    	关联属性 
+	    	property 关联属性名
+    	 -->
+	    <association property="user" javaType="com.ntuzy.domain.User">
+	        <id column="user_id" property="id" />
+	        <result column="name" property="name" />
+	        <result column="password" property="password" />
+	    </association>
+	</resultMap>
+
+	<select id="queryOrderUserResultMap" resultMap="OrderUserResultMap">
+		select o.id,o.user_id,u.name,productname
+		from t_order o
+		left join t_user u on o.user_id=u.id
+	</select>
+	
+</mapper>

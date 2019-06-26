@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 动态代理方式 1 namespace必须和dao接口的路径保持一致 2 dao接口里面的方式和sql的id保持一致 3 dao方法的参数和返回值类型和映射文件的parmamterType保持一致 -->
+<mapper namespace="com.ntuzy.dao.CustomerDao">
+    
+    <!-- 抽取相同的sql片段 -->
+   	<sql id="customerField">
+   	    name,gender,telephone
+   	</sql>
+    
+	<!-- 添加 -->
+	<insert id="saveCustomer" parameterType="customer">
+		INSERT INTO
+		t_customer(NAME,gender,telephone)
+		VALUES(#{name},#{gender},#{telephone})
+
+	</insert>
+
+	<update id="updateCustomer" parameterType="customer">
+		update t_customer set
+		name=#{name} where id=#{id}
+	</update>
+
+	<select id="queryAllCustomer" resultType="customer">
+		select * from
+		t_customer
+	</select>
+
+	<select id="queryCustomerById" resultType="customer"
+		parameterType="int">
+		select <include refid="customerField"></include> from t_customer where id = #{value}
+	</select>
+
+	<!-- 根据name模糊查询 -->
+	<select id="queryCustomerByName" parameterType="String"
+		resultType="customer">
+		select * from t_customer where name like #{value}
+	</select>
+
+	<delete id="deleteCustomer" parameterType="int">
+		delete from t_customer
+		where id=#{value}
+	</delete>
+
+	<insert id="testParameterType"
+		parameterType="com.ntuzy.domain.CustomerVo">
+		INSERT INTO
+		t_customer(NAME,gender,telephone)
+		VALUES(#{customer.name},#{customer.gender},#{customer.telephone})
+	</insert>
+
+	<!-- 统计记录数 -->
+	<select id="queryTotalCount" resultType="long">
+		select count(*) from
+		t_customer
+	</select>
+
+	<!-- -->
+	<select id="queryCustomer" parameterType="int"
+		resultType="customer">
+		select * from t_customer where id=#{value}
+	</select>
+
+	<!-- 定义Resultmap -->
+	<resultMap type="com.ntuzy.domain.CustomerRM"
+		id="customerResultMap">
+		<id column="id" property="custId" />
+		<result column="name" property="custName" />
+		<result column="gender" property="custGender" />
+		<result column="telephone" property="custTelephone" />
+	</resultMap>
+
+	<select id="queryCustomerResultMap" parameterType="int"
+		resultMap="customerResultMap">
+		select * from t_customer where id=#{value}
+	</select>
+
+	<select id="queryCustomerByNameAndTelephone"
+		parameterType="customer" resultType="customer">
+		select * from t_customer
+		<!-- where标签自动将第一个条件的and去掉 -->
+		<where>
+			<if test="name!=null and name!='' ">
+				and name like #{name}
+			</if>
+			<if test="telephone != null and telephone !='' ">
+				and telephone like #{telephone}
+			</if>
+		</where>
+	</select>
+	
+	<delete id="deleteCustomerByIn" parameterType="customer">
+	    delete from t_customer where
+	    <!--
+	    	collection: 需要遍历的属性
+			item: 遍历的变量
+			open: 循环前面的sql语句
+			close： 循环后面的sql语句
+			separator：分隔符
+			
+			id IN(13,16,12) 
+	     -->
+	    <foreach collection="ids" item="id" open="id in(" close=")" separator="," >
+	        #{id}
+	    </foreach>
+	</delete>
+	
+
+</mapper>
