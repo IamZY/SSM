@@ -18,27 +18,24 @@
 	<!-- 配置新的HandlerMapping和HandlerAdapter -->
 	<mvc:annotation-driven></mvc:annotation-driven>
 
-	
-	<!-- SimpleMappingExceptionResolver配置 -->
-	<!-- <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-		支持异常列表 
-		<property name="exceptionMappings">
-			<props>
-				<prop key="java.lang.ArithmeticException">error</prop>
-			</props>
-		</property>
-	
-			默认就会把异常信息封装到exception名称属性 修改异常属性名称 修改异常的信息名称 
 
-		<property name="exceptionAttribute" value="ex"></property>
-	</bean>
- -->
- 
- 	<bean class="com.ntuzy.exception.MyHandlerExceptionResolver" ></bean>
- 
+	<!-- SimpleMappingExceptionResolver配置 -->
+	<!-- <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> 
+		支持异常列表 <property name="exceptionMappings"> <props> <prop key="java.lang.ArithmeticException">error</prop> 
+		</props> </property> 默认就会把异常信息封装到exception名称属性 修改异常属性名称 修改异常的信息名称 <property 
+		name="exceptionAttribute" value="ex"></property> </bean> -->
+
+	<bean class="com.ntuzy.exception.MyHandlerExceptionResolver"></bean>
+
 	<!-- 配置新的HandlerMapping和HandlerAdapter -->
 	<!-- <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"></bean> 
 		<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"></bean> -->
+
+	<!-- 处理文件上传 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 文件大小限制 20k <property name="maxUploadSize" value="20480"></property> -->
+	</bean>
 
 	<!-- 视图解析器 -->
 	<bean
@@ -48,4 +45,19 @@
 		<!-- 后缀访问路径 -->
 		<property name="suffix" value=".jsp"></property>
 	</bean>
+
+	<!-- 配置拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<!-- 拦截的路径 注意: path路径必须是完整的路径（包括后缀名称） -->
+			<mvc:mapping path="/interceptor/test1.action" />
+			<bean class="com.ntuzy.interceptor.MyInterceptor"></bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<!-- 拦截的路径 注意: path路径必须是完整的路径（包括后缀名称） -->
+			<mvc:mapping path="/interceptor/test1.action" />
+			<bean class="com.ntuzy.interceptor.MyInterceptor2"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
 </beans>
